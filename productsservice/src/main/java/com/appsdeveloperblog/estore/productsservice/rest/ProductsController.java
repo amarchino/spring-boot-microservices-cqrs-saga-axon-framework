@@ -1,23 +1,25 @@
 package com.appsdeveloperblog.estore.productsservice.rest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
+
 @RequestMapping("/products")
 @RestController
+@RequiredArgsConstructor
 public class ProductsController {
-	@Autowired
-	private Environment env;
+	private final Environment env;
 
 	@PostMapping
-	public String createProduct() {
-		return "HTTP POST Handled";
+	public String createProduct(@RequestBody CreateProductRestModel createProductRestModel) {
+		return "HTTP POST Handled " + createProductRestModel.getTitle();
 	}
 
 	@GetMapping
