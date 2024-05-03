@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateCommandCommand {
+public class CreateProductCommand {
 	@TargetAggregateIdentifier
 	private final String productId;
 	private final String title;
