@@ -2,6 +2,7 @@ package com.appsdeveloperblog.estore.productsservice.rest;
 
 import java.util.UUID;
 
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductsController {
 	private final Environment env;
+	private final CommandGateway commandGateway;
 
 	@PostMapping
 	public String createProduct(@RequestBody CreateProductRestModel createProductRestModel) {
@@ -29,8 +31,14 @@ public class ProductsController {
 			.title(createProductRestModel.getTitle())
 			.productId(UUID.randomUUID().toString())
 			.build();
+		String returnValue;
+		try {
+			returnValue = commandGateway.sendAndWait(createProductCommand);
+		} catch (Exception ex) {
+			returnValue = ex.getLocalizedMessage();
+		}
 		
-		return "HTTP POST Handled " + createProductRestModel.getTitle();
+		return returnValue;
 	}
 
 	@GetMapping
