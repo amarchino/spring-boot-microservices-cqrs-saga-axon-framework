@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/products")
 @RestController
 @RequiredArgsConstructor
-public class ProductsController {
+public class ProductsCommandController {
 	private final Environment env;
 	private final CommandGateway commandGateway;
 
