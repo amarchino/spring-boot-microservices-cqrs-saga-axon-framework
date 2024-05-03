@@ -3,7 +3,11 @@ package com.appsdeveloperblog.estore.productsservice.command;
 import java.math.BigDecimal;
 
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
+import org.springframework.beans.BeanUtils;
+
+import com.appsdeveloperblog.estore.productsservice.core.events.ProductCreatedEvent;
 
 import lombok.NoArgsConstructor;
 
@@ -20,5 +24,8 @@ public class ProductAggregate {
 		if(createProductCommand.getTitle() == null || createProductCommand.getTitle().isBlank()) {
 			throw new IllegalArgumentException("Title cannot be empty");
 		}
+		ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent();
+		BeanUtils.copyProperties(createProductCommand, productCreatedEvent);
+		AggregateLifecycle.apply(productCreatedEvent);
 	}
 }
