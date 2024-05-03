@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductEventsHandler {
 
-	private ProductsRepository productsRepository;
+	private final ProductsRepository productsRepository;
 
 	@EventHandler
 	public void on(ProductCreatedEvent productCreatedEvent) {
