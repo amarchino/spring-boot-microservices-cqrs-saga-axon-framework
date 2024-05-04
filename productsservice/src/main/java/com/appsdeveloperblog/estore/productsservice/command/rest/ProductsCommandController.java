@@ -1,4 +1,4 @@
-package com.appsdeveloperblog.estore.productsservice.rest;
+package com.appsdeveloperblog.estore.productsservice.command.rest;
 
 import java.util.UUID;
 
