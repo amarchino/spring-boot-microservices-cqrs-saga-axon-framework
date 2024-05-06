@@ -4,6 +4,7 @@ import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
+import com.appsdeveloperblog.estore.productsservice.core.data.ProductLookupEntity;
 import com.appsdeveloperblog.estore.productsservice.core.data.ProductLookupRepository;
 import com.appsdeveloperblog.estore.productsservice.core.events.ProductCreatedEvent;
 
@@ -16,6 +17,8 @@ public class ProductLookupEventsHandler {
 	private final ProductLookupRepository productLookupRepository;
 
 	@EventHandler
-	public void on(ProductCreatedEvent productCreatedEvent) {
+	public void on(ProductCreatedEvent event) {
+		ProductLookupEntity entity = new ProductLookupEntity(event.getProductId(), event.getTitle());
+		productLookupRepository.save(entity);
 	}
 }
