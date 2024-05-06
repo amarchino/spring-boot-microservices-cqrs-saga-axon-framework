@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appsdeveloperblog.estore.productsservice.command.CreateProductCommand;
+import com.appsdeveloperblog.estore.productsservice.rest.CreateProductRestModel;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/products")
@@ -19,7 +21,7 @@ public class ProductsCommandController {
 	private final CommandGateway commandGateway;
 
 	@PostMapping
-	public String createProduct(@RequestBody CreateProductRestModel createProductRestModel) {
+	public String createProduct(@RequestBody @Valid CreateProductRestModel createProductRestModel) {
 		CreateProductCommand createProductCommand = CreateProductCommand.builder()
 			.price(createProductRestModel.getPrice())
 			.quantity(createProductRestModel.getQuantity())
