@@ -2,6 +2,7 @@ package com.appsdeveloperblog.estore.productsservice.query;
 
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -23,5 +24,14 @@ public class ProductEventsHandler {
 		ProductEntity productEntity = new ProductEntity();
 		BeanUtils.copyProperties(productCreatedEvent, productEntity);
 		productsRepository.save(productEntity);
+	}
+
+	@ExceptionHandler(resultType = IllegalArgumentException.class)
+	public void handle(IllegalArgumentException exception) {
+		// Log error message
+	}
+	@ExceptionHandler(resultType = Exception.class)
+	public void handle(Exception exception) {
+		// Log error message
 	}
 }
