@@ -2,6 +2,7 @@ package com.appsdeveloperblog.estore.productsservice.core.errorhandling;
 
 import java.time.Instant;
 
+import org.axonframework.commandhandling.CommandExecutionException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,12 @@ public class ProductServiceErrorHandler {
 	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorMessage> handleException(Exception exception, WebRequest request) {
+		ErrorMessage errorMessage = new ErrorMessage(Instant.now(), exception.getMessage());
+		return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	@ExceptionHandler(CommandExecutionException.class)
+	public ResponseEntity<ErrorMessage> handleCommandExecutionException(CommandExecutionException exception, WebRequest request) {
 		ErrorMessage errorMessage = new ErrorMessage(Instant.now(), exception.getMessage());
 		return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
