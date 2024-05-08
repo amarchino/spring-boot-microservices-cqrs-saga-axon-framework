@@ -6,6 +6,7 @@ import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.spring.stereotype.Saga;
 
 import com.appsdeveloperblog.estore.core.commands.ReserveProductCommand;
+import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import com.appsdeveloperblog.estore.ordersservice.core.events.OrderCreatedEvent;
 
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,10 @@ public class OrderSaga {
 				// Start a compensating transaction
 			}
 		});
+	}
+	
+	@SagaEventHandler(associationProperty = "orderId")
+	public void handle(ProductReservedEvent productReservedEvent) {
+		// Process user payment
 	}
 }
