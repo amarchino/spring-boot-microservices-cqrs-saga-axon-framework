@@ -34,8 +34,6 @@ public class ProductAggregate {
 		ProductCreatedEvent productCreatedEvent = new ProductCreatedEvent();
 		BeanUtils.copyProperties(createProductCommand, productCreatedEvent);
 		AggregateLifecycle.apply(productCreatedEvent);
-		
-		throw new Exception("An error took place in the CreateProductCommand @CommandHandler method");
 	}
 
 	@EventSourcingHandler
