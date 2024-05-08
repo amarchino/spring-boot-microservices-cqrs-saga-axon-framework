@@ -6,6 +6,7 @@ import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import com.appsdeveloperblog.estore.productsservice.core.data.ProductEntity;
 import com.appsdeveloperblog.estore.productsservice.core.data.ProductsRepository;
 import com.appsdeveloperblog.estore.productsservice.core.events.ProductCreatedEvent;
@@ -23,6 +24,12 @@ public class ProductEventsHandler {
 	public void on(ProductCreatedEvent productCreatedEvent) {
 		ProductEntity productEntity = new ProductEntity();
 		BeanUtils.copyProperties(productCreatedEvent, productEntity);
+		productsRepository.save(productEntity);
+	}
+	@EventHandler
+	public void on(ProductReservedEvent productReservedEvent) {
+		ProductEntity productEntity = productsRepository.findByProductId(productReservedEvent.getProductId());
+		productEntity.setQuantity(productEntity.getQuantity() - productReservedEvent.getQuantity());
 		productsRepository.save(productEntity);
 	}
 
