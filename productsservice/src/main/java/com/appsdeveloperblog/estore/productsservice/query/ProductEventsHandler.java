@@ -31,7 +31,7 @@ public class ProductEventsHandler {
 		// Log error message
 	}
 	@ExceptionHandler(resultType = Exception.class)
-	public void handle(Exception exception) {
-		// Log error message
+	public void handle(Exception exception) throws Exception {
+		throw exception;
 	}
 }
