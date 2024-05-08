@@ -12,5 +12,5 @@ public class ReserveProductCommand {
 	private final String productId;
 	private final Integer quantity;
 	private final String orderId;
-	private final String userID;
+	private final String userId;
 }
