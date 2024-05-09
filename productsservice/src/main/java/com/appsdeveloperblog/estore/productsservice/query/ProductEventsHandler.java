@@ -12,10 +12,12 @@ import com.appsdeveloperblog.estore.productsservice.core.data.ProductsRepository
 import com.appsdeveloperblog.estore.productsservice.core.events.ProductCreatedEvent;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
 @ProcessingGroup("product-group")
+@Slf4j
 public class ProductEventsHandler {
 
 	private final ProductsRepository productsRepository;
@@ -31,6 +33,7 @@ public class ProductEventsHandler {
 		ProductEntity productEntity = productsRepository.findByProductId(productReservedEvent.getProductId());
 		productEntity.setQuantity(productEntity.getQuantity() - productReservedEvent.getQuantity());
 		productsRepository.save(productEntity);
+		log.info("ProductReservedEvent is called for orderId: {} and productId: {}", productReservedEvent.getOrderId(), productReservedEvent.getProductId());
 	}
 
 	@ExceptionHandler(resultType = IllegalArgumentException.class)
