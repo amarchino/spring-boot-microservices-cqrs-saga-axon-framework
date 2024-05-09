@@ -1,5 +1,8 @@
 package com.appsdeveloperblog.estore.ordersservice.saga;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.modelling.saga.SagaEventHandler;
@@ -8,6 +11,7 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.appsdeveloperblog.estore.core.commands.ProcessPaymentCommand;
 import com.appsdeveloperblog.estore.core.commands.ReserveProductCommand;
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import com.appsdeveloperblog.estore.core.model.User;
@@ -61,5 +65,24 @@ public class OrderSaga {
 			return;
 		}
 		log.info("Successfully fetched user payment details for user {}", userPaymentDetails.getFirstName());
+		
+		ProcessPaymentCommand processPaymentCommand = ProcessPaymentCommand.builder()
+				.orderId(productReservedEvent.getOrderId())
+				.paymentDetails(userPaymentDetails.getPaymentDetails())
+				.paymentId(UUID.randomUUID().toString())
+				.build();
+		String result = null;
+		try {
+			result = commandGateway.sendAndWait(processPaymentCommand, 10, TimeUnit.SECONDS);
+		}catch (Exception ex) {
+			log.error("{}", ex.getMessage());
+			// Start compensating transaction
+			return;
+		}
+		if(result == null) {
+			// Start compensating transaction
+			return;
+		}
+		log.info("Successfully send process payment command for id {}", processPaymentCommand.getPaymentId());
 	}
 }
