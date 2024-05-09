@@ -1,13 +1,17 @@
 package com.appsdeveloperblog.estore.ordersservice.saga;
 
 import org.axonframework.commandhandling.gateway.CommandGateway;
+import org.axonframework.messaging.responsetypes.ResponseTypes;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.StartSaga;
+import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.appsdeveloperblog.estore.core.commands.ReserveProductCommand;
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
+import com.appsdeveloperblog.estore.core.model.User;
+import com.appsdeveloperblog.estore.core.query.FetchUserPaymentDetailsQuery;
 import com.appsdeveloperblog.estore.ordersservice.core.events.OrderCreatedEvent;
 
 import lombok.NoArgsConstructor;
@@ -17,8 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @NoArgsConstructor
 @Slf4j
 public class OrderSaga {
-	@Autowired
-	private transient CommandGateway commandGateway;
+	@Autowired private transient CommandGateway commandGateway;
+	@Autowired private transient QueryGateway queryGateway;
 
 	@StartSaga
 	@SagaEventHandler(associationProperty = "orderId")
@@ -43,5 +47,19 @@ public class OrderSaga {
 	public void handle(ProductReservedEvent productReservedEvent) {
 		log.info("ProductReservedEvent is called for orderId: {} and productId: {}", productReservedEvent.getOrderId(), productReservedEvent.getProductId());
 		// Process user payment
+		FetchUserPaymentDetailsQuery fetchUserPaymentDetailsQuery = new FetchUserPaymentDetailsQuery(productReservedEvent.getUserId());
+		User userPaymentDetails = null;
+		try {
+			userPaymentDetails = queryGateway.query(fetchUserPaymentDetailsQuery, ResponseTypes.instanceOf(User.class)).join();
+		} catch(Exception ex) {
+			log.error("{}", ex.getMessage());
+			// Start compensating transaction
+			return;
+		}
+		if(userPaymentDetails == null) {
+			// Start compensating transaction
+			return;
+		}
+		log.info("Successfully fetched user payment details for user {}", userPaymentDetails.getFirstName());
 	}
 }
