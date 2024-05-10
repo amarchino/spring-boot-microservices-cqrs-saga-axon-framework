@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.appsdeveloperblog.estore.ordersservice.command.commands.ApproveOrderCommand;
 import com.appsdeveloperblog.estore.ordersservice.command.commands.CreateOrderCommand;
+import com.appsdeveloperblog.estore.ordersservice.events.OrderApprovedEvent;
 import com.appsdeveloperblog.estore.ordersservice.events.OrderCreatedEvent;
 import com.appsdeveloperblog.estore.ordersservice.model.OrderStatus;
 
@@ -36,6 +37,8 @@ public class OrderAggregate {
 	@CommandHandler
 	public void handle(ApproveOrderCommand approveOrderCommand) throws Exception {
 		// Create and publish the OrderApprovedEvent
+		OrderApprovedEvent orderApprovedEvent = new OrderApprovedEvent(approveOrderCommand.getOrderId());
+		AggregateLifecycle.apply(orderApprovedEvent);
 	}
 
 	@EventSourcingHandler
@@ -46,5 +49,10 @@ public class OrderAggregate {
 		this.quantity = orderCreatedEvent.getQuantity();
 		this.addressId = orderCreatedEvent.getAddressId();
 		this.orderStatus = orderCreatedEvent.getOrderStatus();
+	}
+	
+	@EventSourcingHandler
+	public void on(OrderApprovedEvent orderApprovedEvent) {
+		this.orderStatus = orderApprovedEvent.getOrderStatus();
 	}
 }
