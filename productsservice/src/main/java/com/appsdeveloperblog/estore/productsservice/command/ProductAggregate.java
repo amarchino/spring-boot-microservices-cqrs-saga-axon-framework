@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.appsdeveloperblog.estore.core.commands.ReserveProductCommand;
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
+import com.appsdeveloperblog.estore.productsservice.command.commands.CreateProductCommand;
 import com.appsdeveloperblog.estore.productsservice.events.ProductCreatedEvent;
 
 import lombok.NoArgsConstructor;

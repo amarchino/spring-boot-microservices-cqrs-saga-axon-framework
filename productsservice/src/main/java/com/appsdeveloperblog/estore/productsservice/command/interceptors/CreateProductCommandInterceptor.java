@@ -7,7 +7,7 @@ import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.messaging.MessageDispatchInterceptor;
 import org.springframework.stereotype.Component;
 
-import com.appsdeveloperblog.estore.productsservice.command.CreateProductCommand;
+import com.appsdeveloperblog.estore.productsservice.command.commands.CreateProductCommand;
 import com.appsdeveloperblog.estore.productsservice.data.ProductLookupEntity;
 import com.appsdeveloperblog.estore.productsservice.data.ProductLookupRepository;
 

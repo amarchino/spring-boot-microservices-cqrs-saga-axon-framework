@@ -1,4 +1,4 @@
-package com.appsdeveloperblog.estore.ordersservice.command;
+package com.appsdeveloperblog.estore.ordersservice.command.commands;
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 

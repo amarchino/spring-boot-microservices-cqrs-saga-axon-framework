@@ -17,6 +17,7 @@ import com.appsdeveloperblog.estore.core.events.PaymentProcessedEvent;
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import com.appsdeveloperblog.estore.core.model.User;
 import com.appsdeveloperblog.estore.core.query.FetchUserPaymentDetailsQuery;
+import com.appsdeveloperblog.estore.ordersservice.command.commands.ApproveOrderCommand;
 import com.appsdeveloperblog.estore.ordersservice.events.OrderCreatedEvent;
 
 import lombok.NoArgsConstructor;
@@ -90,5 +91,7 @@ public class OrderSaga {
 	@SagaEventHandler(associationProperty = "orderId")
 	public void handle(PaymentProcessedEvent paymentProcessedEvent) {
 		// Send an ApproveOrderCommand
+		ApproveOrderCommand approveOrderCommand = new ApproveOrderCommand(paymentProcessedEvent.getOrderId());
+		commandGateway.send(approveOrderCommand);
 	}
 }
