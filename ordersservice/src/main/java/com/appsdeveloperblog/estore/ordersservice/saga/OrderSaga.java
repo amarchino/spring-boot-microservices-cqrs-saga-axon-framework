@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.appsdeveloperblog.estore.core.commands.ProcessPaymentCommand;
 import com.appsdeveloperblog.estore.core.commands.ReserveProductCommand;
+import com.appsdeveloperblog.estore.core.events.PaymentProcessedEvent;
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import com.appsdeveloperblog.estore.core.model.User;
 import com.appsdeveloperblog.estore.core.query.FetchUserPaymentDetailsQuery;
@@ -84,5 +85,10 @@ public class OrderSaga {
 			return;
 		}
 		log.info("Successfully send process payment command for id {}", processPaymentCommand.getPaymentId());
+	}
+	
+	@SagaEventHandler(associationProperty = "orderId")
+	public void handle(PaymentProcessedEvent paymentProcessedEvent) {
+		// Send an ApproveOrderCommand
 	}
 }
