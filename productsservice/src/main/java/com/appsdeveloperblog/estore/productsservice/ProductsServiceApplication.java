@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Import;
 
 import com.appsdeveloperblog.estore.core.config.AxonConfig;
 import com.appsdeveloperblog.estore.productsservice.command.interceptors.CreateProductCommandInterceptor;
-import com.appsdeveloperblog.estore.productsservice.core.errorhandling.ProductsServiceErrorHandler;
+import com.appsdeveloperblog.estore.productsservice.errorhandling.ProductsServiceErrorHandler;
 
 @SpringBootApplication
 @EnableDiscoveryClient

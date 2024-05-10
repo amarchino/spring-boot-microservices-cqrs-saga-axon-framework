@@ -8,8 +8,8 @@ import org.axonframework.messaging.MessageDispatchInterceptor;
 import org.springframework.stereotype.Component;
 
 import com.appsdeveloperblog.estore.productsservice.command.CreateProductCommand;
-import com.appsdeveloperblog.estore.productsservice.core.data.ProductLookupEntity;
-import com.appsdeveloperblog.estore.productsservice.core.data.ProductLookupRepository;
+import com.appsdeveloperblog.estore.productsservice.data.ProductLookupEntity;
+import com.appsdeveloperblog.estore.productsservice.data.ProductLookupRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

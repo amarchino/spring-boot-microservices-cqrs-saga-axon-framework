@@ -7,8 +7,8 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
 
-import com.appsdeveloperblog.estore.ordersservice.core.OrderStatus;
-import com.appsdeveloperblog.estore.ordersservice.core.events.OrderCreatedEvent;
+import com.appsdeveloperblog.estore.ordersservice.events.OrderCreatedEvent;
+import com.appsdeveloperblog.estore.ordersservice.model.OrderStatus;
 
 import lombok.NoArgsConstructor;
 

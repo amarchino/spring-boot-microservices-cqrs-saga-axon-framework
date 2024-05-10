@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.appsdeveloperblog.estore.ordersservice.command.CreateOrderCommand;
-import com.appsdeveloperblog.estore.ordersservice.core.OrderStatus;
+import com.appsdeveloperblog.estore.ordersservice.model.OrderStatus;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

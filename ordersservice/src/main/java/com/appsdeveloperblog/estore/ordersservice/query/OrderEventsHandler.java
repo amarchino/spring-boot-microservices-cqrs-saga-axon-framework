@@ -6,9 +6,9 @@ import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import com.appsdeveloperblog.estore.ordersservice.core.data.OrderEntity;
-import com.appsdeveloperblog.estore.ordersservice.core.data.OrdersRepository;
-import com.appsdeveloperblog.estore.ordersservice.core.events.OrderCreatedEvent;
+import com.appsdeveloperblog.estore.ordersservice.data.OrderEntity;
+import com.appsdeveloperblog.estore.ordersservice.data.OrdersRepository;
+import com.appsdeveloperblog.estore.ordersservice.events.OrderCreatedEvent;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,12 +1,11 @@
-package com.appsdeveloperblog.estore.ordersservice.query.rest;
+package com.appsdeveloperblog.estore.ordersservice.events;
 
 import com.appsdeveloperblog.estore.ordersservice.model.OrderStatus;
 
 import lombok.Data;
 
 @Data
-public class OrderRestModel {
-
+public class OrderCreatedEvent {
 	private String orderId;
 	private String productId;
 	private String userId;

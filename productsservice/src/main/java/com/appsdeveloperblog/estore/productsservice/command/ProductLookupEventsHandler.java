@@ -4,9 +4,9 @@ import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
-import com.appsdeveloperblog.estore.productsservice.core.data.ProductLookupEntity;
-import com.appsdeveloperblog.estore.productsservice.core.data.ProductLookupRepository;
-import com.appsdeveloperblog.estore.productsservice.core.events.ProductCreatedEvent;
+import com.appsdeveloperblog.estore.productsservice.data.ProductLookupEntity;
+import com.appsdeveloperblog.estore.productsservice.data.ProductLookupRepository;
+import com.appsdeveloperblog.estore.productsservice.events.ProductCreatedEvent;
 
 import lombok.RequiredArgsConstructor;
 

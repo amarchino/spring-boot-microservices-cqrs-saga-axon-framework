@@ -6,7 +6,7 @@ import org.axonframework.queryhandling.QueryHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import com.appsdeveloperblog.estore.ordersservice.core.data.OrdersRepository;
+import com.appsdeveloperblog.estore.ordersservice.data.OrdersRepository;
 import com.appsdeveloperblog.estore.ordersservice.query.rest.OrderRestModel;
 
 import lombok.RequiredArgsConstructor;

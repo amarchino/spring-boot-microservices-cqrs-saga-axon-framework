@@ -2,7 +2,7 @@ package com.appsdeveloperblog.estore.ordersservice.command;
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-import com.appsdeveloperblog.estore.ordersservice.core.OrderStatus;
+import com.appsdeveloperblog.estore.ordersservice.model.OrderStatus;
 
 import lombok.Builder;
 import lombok.Data;

@@ -7,9 +7,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
-import com.appsdeveloperblog.estore.productsservice.core.data.ProductEntity;
-import com.appsdeveloperblog.estore.productsservice.core.data.ProductsRepository;
-import com.appsdeveloperblog.estore.productsservice.core.events.ProductCreatedEvent;
+import com.appsdeveloperblog.estore.productsservice.data.ProductEntity;
+import com.appsdeveloperblog.estore.productsservice.data.ProductsRepository;
+import com.appsdeveloperblog.estore.productsservice.events.ProductCreatedEvent;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
