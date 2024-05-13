@@ -12,6 +12,7 @@ import com.appsdeveloperblog.estore.ordersservice.command.commands.CreateOrderCo
 import com.appsdeveloperblog.estore.ordersservice.command.commands.RejectOrderCommand;
 import com.appsdeveloperblog.estore.ordersservice.events.OrderApprovedEvent;
 import com.appsdeveloperblog.estore.ordersservice.events.OrderCreatedEvent;
+import com.appsdeveloperblog.estore.ordersservice.events.OrderRejectedEvent;
 import com.appsdeveloperblog.estore.ordersservice.model.OrderStatus;
 
 import lombok.NoArgsConstructor;
@@ -45,6 +46,8 @@ public class OrderAggregate {
 	@CommandHandler
 	public void handle(RejectOrderCommand rejectOrderCommand) throws Exception {
 		// Create and publish the OrderRejectedEvent
+		OrderRejectedEvent orderRejectedEvent = new OrderRejectedEvent(rejectOrderCommand.getOrderId(), rejectOrderCommand.getReason());
+		AggregateLifecycle.apply(orderRejectedEvent);
 	}
 
 	@EventSourcingHandler
@@ -60,5 +63,9 @@ public class OrderAggregate {
 	@EventSourcingHandler
 	public void on(OrderApprovedEvent orderApprovedEvent) {
 		this.orderStatus = orderApprovedEvent.getOrderStatus();
+	}
+	@EventSourcingHandler
+	public void on(OrderRejectedEvent orderRejectedEvent) {
+		this.orderStatus = orderRejectedEvent.getOrderStatus();
 	}
 }

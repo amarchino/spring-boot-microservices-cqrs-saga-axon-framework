@@ -10,6 +10,7 @@ import com.appsdeveloperblog.estore.ordersservice.data.OrderEntity;
 import com.appsdeveloperblog.estore.ordersservice.data.OrdersRepository;
 import com.appsdeveloperblog.estore.ordersservice.events.OrderApprovedEvent;
 import com.appsdeveloperblog.estore.ordersservice.events.OrderCreatedEvent;
+import com.appsdeveloperblog.estore.ordersservice.events.OrderRejectedEvent;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,6 +35,13 @@ public class OrderEventsHandler {
 			return;
 		}
 		orderEntity.setOrderStatus(orderApprovedEvent.getOrderStatus());
+		ordersRepository.save(orderEntity);
+	}
+	
+	@EventHandler
+	public void on(OrderRejectedEvent orderRejectedEvent) {
+		OrderEntity orderEntity = ordersRepository.findByOrderId(orderRejectedEvent.getOrderId());
+		orderEntity.setOrderStatus(orderRejectedEvent.getOrderStatus());
 		ordersRepository.save(orderEntity);
 	}
 

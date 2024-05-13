@@ -24,6 +24,7 @@ import com.appsdeveloperblog.estore.ordersservice.command.commands.ApproveOrderC
 import com.appsdeveloperblog.estore.ordersservice.command.commands.RejectOrderCommand;
 import com.appsdeveloperblog.estore.ordersservice.events.OrderApprovedEvent;
 import com.appsdeveloperblog.estore.ordersservice.events.OrderCreatedEvent;
+import com.appsdeveloperblog.estore.ordersservice.events.OrderRejectedEvent;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -127,5 +128,10 @@ public class OrderSaga {
 		// Create and send RejectOrderCommand
 		RejectOrderCommand rejectOrderCommand = new RejectOrderCommand(productReservationCancelledEvent.getOrderId(), productReservationCancelledEvent.getReason());
 		commandGateway.send(rejectOrderCommand);
+	}
+	@EndSaga
+	@SagaEventHandler(associationProperty = "orderId")
+	public void handle(OrderRejectedEvent orderRejectedEvent) {
+		log.info("Successfully rejected order with id {} with reason: {}", orderRejectedEvent.getOrderId(), orderRejectedEvent.getReason());
 	}
 }
