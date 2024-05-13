@@ -1,5 +1,8 @@
 package com.appsdeveloperblog.estore.ordersservice.query;
 
-public class FindOrderQuery {
+import lombok.Value;
 
+@Value
+public class FindOrderQuery {
+	private final String orderId;
 }
