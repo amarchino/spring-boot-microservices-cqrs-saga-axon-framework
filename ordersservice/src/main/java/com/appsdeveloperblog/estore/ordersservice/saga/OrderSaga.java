@@ -62,6 +62,8 @@ public class OrderSaga {
 				Throwable exception = commandResultMessage.exceptionResult();
 				log.error("Exception", exception);
 				// Start a compensating transaction
+				RejectOrderCommand rejectOrderCommand = new RejectOrderCommand(orderCreatedEvent.getOrderId(), exception.getMessage());
+				commandGateway.send(rejectOrderCommand);
 			}
 		});
 	}
