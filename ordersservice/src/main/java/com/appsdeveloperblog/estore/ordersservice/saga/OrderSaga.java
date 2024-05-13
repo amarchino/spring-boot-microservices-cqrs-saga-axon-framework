@@ -12,6 +12,7 @@ import org.axonframework.modelling.saga.EndSaga;
 import org.axonframework.modelling.saga.SagaEventHandler;
 import org.axonframework.modelling.saga.StartSaga;
 import org.axonframework.queryhandling.QueryGateway;
+import org.axonframework.queryhandling.QueryUpdateEmitter;
 import org.axonframework.spring.stereotype.Saga;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,6 +29,8 @@ import com.appsdeveloperblog.estore.ordersservice.command.commands.RejectOrderCo
 import com.appsdeveloperblog.estore.ordersservice.events.OrderApprovedEvent;
 import com.appsdeveloperblog.estore.ordersservice.events.OrderCreatedEvent;
 import com.appsdeveloperblog.estore.ordersservice.events.OrderRejectedEvent;
+import com.appsdeveloperblog.estore.ordersservice.model.OrderSummary;
+import com.appsdeveloperblog.estore.ordersservice.query.FindOrderQuery;
 
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +43,7 @@ public class OrderSaga {
 	@Autowired private transient CommandGateway commandGateway;
 	@Autowired private transient QueryGateway queryGateway;
 	@Autowired private transient DeadlineManager deadlineManager;
+	@Autowired private transient QueryUpdateEmitter queryUpdateEmitter;
 
 	private String scheduleId;
 
@@ -137,6 +141,7 @@ public class OrderSaga {
 	public void handle(OrderApprovedEvent orderApprovedEvent) {
 		log.info("Order is approved. Order saga is complete for orderId {}", orderApprovedEvent.getOrderId());
 //		SagaLifecycle.end();
+		queryUpdateEmitter.emit(FindOrderQuery.class, query -> true, new OrderSummary(orderApprovedEvent.getOrderId(), orderApprovedEvent.getOrderStatus(), ""));
 	}
 	
 	// Compensating
@@ -150,6 +155,7 @@ public class OrderSaga {
 	@SagaEventHandler(associationProperty = "orderId")
 	public void handle(OrderRejectedEvent orderRejectedEvent) {
 		log.info("Successfully rejected order with id {} with reason: {}", orderRejectedEvent.getOrderId(), orderRejectedEvent.getReason());
+		queryUpdateEmitter.emit(FindOrderQuery.class, query -> true, new OrderSummary(orderRejectedEvent.getOrderId(), orderRejectedEvent.getOrderStatus(), orderRejectedEvent.getReason()));
 	}
 	
 	// Deadline
