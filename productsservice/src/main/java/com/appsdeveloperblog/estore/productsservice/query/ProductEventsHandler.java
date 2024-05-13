@@ -6,6 +6,7 @@ import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import com.appsdeveloperblog.estore.core.events.ProductReservationCancelledEvent;
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import com.appsdeveloperblog.estore.productsservice.data.ProductEntity;
 import com.appsdeveloperblog.estore.productsservice.data.ProductsRepository;
@@ -34,6 +35,13 @@ public class ProductEventsHandler {
 		productEntity.setQuantity(productEntity.getQuantity() - productReservedEvent.getQuantity());
 		productsRepository.save(productEntity);
 		log.info("ProductReservedEvent is called for orderId: {} and productId: {}", productReservedEvent.getOrderId(), productReservedEvent.getProductId());
+	}
+	@EventHandler
+	public void on(ProductReservationCancelledEvent productReservationCancelledEvent) {
+		ProductEntity productEntity = productsRepository.findByProductId(productReservationCancelledEvent.getProductId());
+		productEntity.setQuantity(productEntity.getQuantity() + productReservationCancelledEvent.getQuantity());
+		productsRepository.save(productEntity);
+		log.info("ProductReservationCancelledEvent is called for orderId: {} and productId: {}", productReservationCancelledEvent.getOrderId(), productReservationCancelledEvent.getProductId());
 	}
 
 	@ExceptionHandler(resultType = IllegalArgumentException.class)
