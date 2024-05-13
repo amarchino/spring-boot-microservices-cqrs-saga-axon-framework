@@ -13,6 +13,7 @@ import org.axonframework.queryhandling.QueryGateway;
 import org.axonframework.spring.stereotype.Saga;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.appsdeveloperblog.estore.core.commands.CancelProductReservationCommand;
 import com.appsdeveloperblog.estore.core.commands.ProcessPaymentCommand;
 import com.appsdeveloperblog.estore.core.commands.ReserveProductCommand;
 import com.appsdeveloperblog.estore.core.events.PaymentProcessedEvent;
@@ -63,10 +64,12 @@ public class OrderSaga {
 		} catch(Exception ex) {
 			log.error("{}", ex.getMessage());
 			// Start compensating transaction
+			cancelProductReservation(productReservedEvent, ex.getMessage());
 			return;
 		}
 		if(userPaymentDetails == null) {
 			// Start compensating transaction
+			cancelProductReservation(productReservedEvent, "Could not fetch user payment details");
 			return;
 		}
 		log.info("Successfully fetched user payment details for user {}", userPaymentDetails.getFirstName());
@@ -82,13 +85,25 @@ public class OrderSaga {
 		}catch (Exception ex) {
 			log.error("{}", ex.getMessage());
 			// Start compensating transaction
+			cancelProductReservation(productReservedEvent, ex.getMessage());
 			return;
 		}
 		if(result == null) {
 			// Start compensating transaction
+			cancelProductReservation(productReservedEvent, "Could not process user payment with provided payment details");
 			return;
 		}
 		log.info("Successfully send process payment command for id {}", processPaymentCommand.getPaymentId());
+	}
+	private void cancelProductReservation(ProductReservedEvent productReservedEvent, String reason) {
+		CancelProductReservationCommand cancelProductReservationCommand = CancelProductReservationCommand.builder()
+				.orderId(productReservedEvent.getOrderId())
+				.productId(productReservedEvent.getProductId())
+				.quantity(productReservedEvent.getQuantity())
+				.userId(productReservedEvent.getUserId())
+				.reason(reason)
+				.build();
+		commandGateway.send(cancelProductReservationCommand);
 	}
 	
 	@SagaEventHandler(associationProperty = "orderId")
