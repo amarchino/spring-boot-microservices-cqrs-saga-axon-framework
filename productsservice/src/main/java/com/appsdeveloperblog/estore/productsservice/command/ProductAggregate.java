@@ -9,6 +9,7 @@ import org.axonframework.modelling.command.AggregateLifecycle;
 import org.axonframework.spring.stereotype.Aggregate;
 import org.springframework.beans.BeanUtils;
 
+import com.appsdeveloperblog.estore.core.commands.CancelProductReservationCommand;
 import com.appsdeveloperblog.estore.core.commands.ReserveProductCommand;
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import com.appsdeveloperblog.estore.productsservice.command.commands.CreateProductCommand;
@@ -50,6 +51,10 @@ public class ProductAggregate {
 				.quantity(reserveProductCommand.getQuantity())
 				.build();
 		AggregateLifecycle.apply(productReservedEvent);
+	}
+	@CommandHandler
+	public void handle(CancelProductReservationCommand cancelProductReservationCommand) throws Exception {
+		// TODO
 	}
 
 	@EventSourcingHandler
