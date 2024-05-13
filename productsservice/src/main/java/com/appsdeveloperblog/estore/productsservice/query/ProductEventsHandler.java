@@ -2,6 +2,7 @@ package com.appsdeveloperblog.estore.productsservice.query;
 
 import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.messaging.interceptors.ExceptionHandler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
@@ -55,5 +56,10 @@ public class ProductEventsHandler {
 	@ExceptionHandler(resultType = Exception.class)
 	public void handle(Exception exception) throws Exception {
 		throw exception;
+	}
+
+	@ResetHandler
+	public void reset() {
+		productsRepository.deleteAll();
 	}
 }
