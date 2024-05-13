@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 
 import com.appsdeveloperblog.estore.core.commands.CancelProductReservationCommand;
 import com.appsdeveloperblog.estore.core.commands.ReserveProductCommand;
+import com.appsdeveloperblog.estore.core.events.ProductReservationCancelledEvent;
 import com.appsdeveloperblog.estore.core.events.ProductReservedEvent;
 import com.appsdeveloperblog.estore.productsservice.command.commands.CreateProductCommand;
 import com.appsdeveloperblog.estore.productsservice.events.ProductCreatedEvent;
@@ -54,7 +55,14 @@ public class ProductAggregate {
 	}
 	@CommandHandler
 	public void handle(CancelProductReservationCommand cancelProductReservationCommand) throws Exception {
-		// TODO
+		ProductReservationCancelledEvent productReservationCancelledEvent = ProductReservationCancelledEvent.builder()
+				.orderId(cancelProductReservationCommand.getOrderId())
+				.productId(cancelProductReservationCommand.getProductId())
+				.userId(cancelProductReservationCommand.getUserId())
+				.quantity(cancelProductReservationCommand.getQuantity())
+				.reason(cancelProductReservationCommand.getReason())
+				.build();
+		AggregateLifecycle.apply(productReservationCancelledEvent);
 	}
 
 	@EventSourcingHandler
