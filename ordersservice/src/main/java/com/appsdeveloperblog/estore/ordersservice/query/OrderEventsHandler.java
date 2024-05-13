@@ -13,10 +13,12 @@ import com.appsdeveloperblog.estore.ordersservice.events.OrderCreatedEvent;
 import com.appsdeveloperblog.estore.ordersservice.events.OrderRejectedEvent;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
 @ProcessingGroup("order-group")
+@Slf4j
 public class OrderEventsHandler {
 	private final OrdersRepository ordersRepository;
 
@@ -34,15 +36,19 @@ public class OrderEventsHandler {
 			// TOOD: do something about it
 			return;
 		}
+		log.debug("OrderApprovedEvent: current order status: {}", orderEntity.getOrderStatus());
 		orderEntity.setOrderStatus(orderApprovedEvent.getOrderStatus());
 		ordersRepository.save(orderEntity);
+		log.debug("OrderApprovedEvent: new order status: {}", orderEntity.getOrderStatus());
 	}
 	
 	@EventHandler
 	public void on(OrderRejectedEvent orderRejectedEvent) {
 		OrderEntity orderEntity = ordersRepository.findByOrderId(orderRejectedEvent.getOrderId());
+		log.debug("OrderRejectedEvent: current order status: {}", orderEntity.getOrderStatus());
 		orderEntity.setOrderStatus(orderRejectedEvent.getOrderStatus());
 		ordersRepository.save(orderEntity);
+		log.debug("OrderRejectedEvent: new order status: {}", orderEntity.getOrderStatus());
 	}
 
 	@ExceptionHandler(resultType = IllegalArgumentException.class)
